@@ -1,0 +1,19 @@
+/* Custom Scrollbar Styling */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px; /* Thin scrollbar */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #1f2937; /* Dark gray track */
+    border-radius: 10px; /* Rounded track edges */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #9333ea; /* Purple thumb */
+    border-radius: 10px; /* Rounded thumb */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #7e22ce; /* Darker purple on hover */
+  }
+  
