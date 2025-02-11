@@ -40,7 +40,7 @@ const googleLogin = useGoogleLogin({
     setuser(userInfo);
 
     //setting the userInfo to the localstorage so that the signindialog dosent appear again on refresh
-    localStorage.setItem('userInfo',userInfo)
+    localStorage.setItem('userInfo',JSON.stringify(userInfo))
     closeDialog(false);
      response = await axios.post('http://localhost:3000/login',{
       userInfo:userInfo.data

@@ -2,13 +2,13 @@ const express =  require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
-const userModel = require('./db');
+const {userModel,WorkSpaceModel} = require('./db');
 app.use(cors());
 mongoose.connect('mongodb+srv://210rajdeep:13132030931@cluster0.izjm5.mongodb.net/GenWeb_AI');
 app.use(express.json())
 
 app.post('/login',async (req,res)=>{
-    const {name,email,picture} = req.body.userInfo;
+    const {name,email,picture,sub} = req.body.userInfo;
   
   const userexists =  await userModel.findOne({
     email:email
@@ -17,7 +17,8 @@ app.post('/login',async (req,res)=>{
     await userModel.create({
      name:name,
     email:email,
-    picture:picture
+    picture:picture,
+    sub:sub
     })
     res.json({
         msg:'user created'
@@ -31,7 +32,15 @@ res.json({
 })
 
 
+//testing for the first prompt from the landing page
+app.post('/prompt', async (req,res)=>{
+    const {messeges,userSub} = req.body;
+    await WorkSpaceModel.create({
+        messeges:messeges,
+        userSub:userSub
+    })
 
+})
 
 
 app.listen(3000,()=>console.log('port 3000 running...'))

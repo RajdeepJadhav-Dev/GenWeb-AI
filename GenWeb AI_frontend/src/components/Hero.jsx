@@ -6,12 +6,13 @@ import { useState } from "react";
 import { useRecoilState, useRecoilValue} from "recoil";
 import { PromptState, UserDetails } from "@/atoms";
 import { Signindialog } from './Signindialog'
+import axios from "axios";
 
 
 export default function Hero(){
 
     //the prompt extracted from the text-area...have to use the state variable so that the enter button conditionally appears onchage in the text of text area
-    const [UserInput,SetUserInput] = useState();
+    const [UserInput,SetUserInput] = useState('');
 
     //the prompt user will give for the generation of the code which will be stored in the atom
     const [PromptInput,SetPromptInput] = useRecoilState(PromptState);
@@ -22,20 +23,27 @@ export default function Hero(){
     //to open the signin in with google dialog
     const [openDialog,SetopenDialog] = useState(false);
 
+   
 
-
-    function Prompt(input){
+    async function Prompt(input){
        
-        // stored the userinfo in the localstorage so that it dosent ask for signin even after refresh
-        const userInfo = localStorage.getItem('userInfo')
-
+    //used json parse because localstorage stores everuthing as a string 
+       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        //extracted the unique identifier google gave to the user
+       const userSub = userInfo?.data?.sub
+        console.log(userSub);
+        console.log(input)
         if(!userInfo){
             SetopenDialog(true);
             return;
         }
+        await axios.post('http://localhost:3000/prompt',{
+            messeges:input,
+            userSub:userSub
+        })
         SetPromptInput(input)
     }
-
+   
     return(
         <>
      <Signindialog  openDialog={openDialog} closeDialog={(v)=>SetopenDialog(false)}></Signindialog>
