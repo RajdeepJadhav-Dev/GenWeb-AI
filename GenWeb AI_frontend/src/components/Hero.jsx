@@ -7,9 +7,11 @@ import { useRecoilState, useRecoilValue} from "recoil";
 import { PromptState, UserDetails } from "@/atoms";
 import { Signindialog } from './Signindialog'
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Hero(){
+
+    const navigate = useNavigate();
 
     //the prompt extracted from the text-area...have to use the state variable so that the enter button conditionally appears onchage in the text of text area
     const [UserInput,SetUserInput] = useState('');
@@ -26,7 +28,7 @@ export default function Hero(){
    
 
     async function Prompt(input){
-       
+
     //used json parse because localstorage stores everuthing as a string 
        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         //extracted the unique identifier google gave to the user
@@ -37,11 +39,19 @@ export default function Hero(){
             SetopenDialog(true);
             return;
         }
-        await axios.post('http://localhost:3000/prompt',{
+        
+         axios.post('http://localhost:3000/prompt',{
             messeges:input,
             userSub:userSub
+        })  .then((response) => {
+            console.log("Navigating to /Workspace...");
+            navigate('/Workspace'); 
+            SetPromptInput(input); 
         })
-        SetPromptInput(input)
+        .catch((error) => {
+            console.error("Error in axios request:", error);
+        });
+        
     }
    
     return(

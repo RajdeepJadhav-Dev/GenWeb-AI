@@ -39,6 +39,9 @@ app.post('/prompt', async (req,res)=>{
         messeges:messeges,
         userSub:userSub
     })
+    res.json({
+        msg:'messege succesfully stored'
+    })
 
 })
 
