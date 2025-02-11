@@ -10,14 +10,26 @@ import { Signindialog } from './Signindialog'
 
 export default function Hero(){
 
+    //the prompt extracted from the text-area...have to use the state variable so that the enter button conditionally appears onchage in the text of text area
     const [UserInput,SetUserInput] = useState();
+
+    //the prompt user will give for the generation of the code which will be stored in the atom
     const [PromptInput,SetPromptInput] = useRecoilState(PromptState);
+
+    //not sure if i need this right now but will keep it just to be cautious
     const userdetails = useRecoilValue(UserDetails);
+
+    //to open the signin in with google dialog
     const [openDialog,SetopenDialog] = useState(false);
 
 
+
     function Prompt(input){
-        if(!userdetails?.data?.name){
+       
+        // stored the userinfo in the localstorage so that it dosent ask for signin even after refresh
+        const userInfo = localStorage.getItem('userInfo')
+
+        if(!userInfo){
             SetopenDialog(true);
             return;
         }

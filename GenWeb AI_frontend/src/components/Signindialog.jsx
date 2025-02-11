@@ -13,13 +13,19 @@ import {
 import { Button } from './ui/button'
 import { useRecoilState } from 'recoil'
 import { UserDetails } from '@/atoms'
-  
+import { stringify } from 'postcss'
+ 
 
+//initiallizing the response you get after send the google account details to the backend/databse for saving
+let response;
+
+//react google auth
 export const Signindialog = ({openDialog,closeDialog}) => {
 
-  const [user,setuser] = useRecoilState(UserDetails);
+//not sure if i need this userdetails atom but still keeping it for caution
+const [user,setuser] = useRecoilState(UserDetails);
 
-  
+
 const googleLogin = useGoogleLogin({
   onSuccess: async (tokenResponse) => {
     console.log(tokenResponse);
@@ -29,8 +35,18 @@ const googleLogin = useGoogleLogin({
     );
 
     console.log(userInfo);
+
+    //not sure if this setting of user details to the atom is neccesory but still keeping it for caution
     setuser(userInfo);
+
+    //setting the userInfo to the localstorage so that the signindialog dosent appear again on refresh
+    localStorage.setItem('userInfo',userInfo)
     closeDialog(false);
+     response = await axios.post('http://localhost:3000/login',{
+      userInfo:userInfo.data
+    })
+
+    console.log(response.data.msg)
   },
   onError: errorResponse => console.log(errorResponse),
 });
@@ -42,7 +58,6 @@ const googleLogin = useGoogleLogin({
 
   return (
     <Dialog open={openDialog} onOpenChange={closeDialog}>
- 
   <DialogContent className='bg-black text-white '>
     <DialogHeader className='flex justify-center items-center'>
       <DialogTitle>Continue with GenWeb AI</DialogTitle>
