@@ -14,7 +14,8 @@ const UserSchema = new schema({
 })
 
 const WorkSpaceSchema = new schema({
-    messeges:mongoose.Schema.Types.Mixed,
+    messeges:[{content:mongoose.Schema.Types.Mixed,
+                role:String}],
     filedata:mongoose.Schema.Types.Mixed,
     userSub: { type: String, ref: "Users" }
 })

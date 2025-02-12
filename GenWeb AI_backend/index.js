@@ -35,12 +35,13 @@ res.json({
 //testing for the first prompt from the landing page
 app.post('/prompt', async (req,res)=>{
     const {messeges,userSub} = req.body;
-    await WorkSpaceModel.create({
-        messeges:messeges,
+   const response = await WorkSpaceModel.create({
+        messeges:[{content:messeges[0].content,role:messeges[0].role}],
         userSub:userSub
     })
     res.json({
-        msg:'messege succesfully stored'
+        msg:'messege succesfully stored',
+        workspaceId:response._id
     })
 
 })

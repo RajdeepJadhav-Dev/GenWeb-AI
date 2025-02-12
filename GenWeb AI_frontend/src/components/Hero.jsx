@@ -33,19 +33,18 @@ export default function Hero(){
        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         //extracted the unique identifier google gave to the user
        const userSub = userInfo?.data?.sub
-        console.log(userSub);
-        console.log(input)
+     
         if(!userInfo){
             SetopenDialog(true);
             return;
         }
         
          axios.post('http://localhost:3000/prompt',{
-            messeges:input,
+            messeges:[{content:input,
+                role:'user'}],
             userSub:userSub
         })  .then((response) => {
-            console.log("Navigating to /Workspace...");
-            navigate('/Workspace'); 
+            navigate('/Workspace/'+response.data.workspaceId); 
             SetPromptInput(input); 
         })
         .catch((error) => {
