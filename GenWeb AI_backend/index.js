@@ -74,8 +74,10 @@ app.get('/get/:WorkSpaceId',async (req,res)=>{
     const response = await WorkSpaceModel.findOne({
         _id: WorkspaceId
     })
+    const LastMessege = response.messeges[response.messeges.length-1];
+    
     res.json({
-        messeges:response.messeges
+        messeges:[LastMessege]
     })
 
 })
@@ -86,7 +88,7 @@ app.listen(3000,()=>console.log('port 3000 running...'))
 // gemini response
 app.post('/AiResponse',async (req,res)=>{
     const {PROMPT} = req.body;
-    prompt = String(PROMPT)
+    prompt = PROMPT
     const result = await chatSession.sendMessage(PROMPT);
     const AIresp = result.response.text();
     res.json({

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import Background from "./components/Background";
 import Bolt from "./icons/Bolt";
 import { Button } from "./components/ui/button";
@@ -9,13 +9,14 @@ import Prompt from './data/prompt'
 export default function Workspace() {
   const { WorkspaceId } = useParams();  // Extracting the WorkspaceId from the URL
   const [messages, setMessages] = useState([]);  // State to hold messages
+  const isFetchingResponse = useRef(false);
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         const res = await axios.get(`http://localhost:3000/get/${WorkspaceId}`);
        // console.log('Fetched Messages:', res.data.messeges);  // Check what data is fetched
-        setMessages(res.data.messeges);  // Set the fetched messages to state
+       setMessages([res.data.messeges[0]]);  // ✅ Store the last message as an array
       } catch (err) {
         console.error('Error fetching messages:', err);
         setMessages('Error loading messages');  // Show error message in UI
@@ -25,25 +26,33 @@ export default function Workspace() {
     fetchMessages();
   }, [WorkspaceId]);
 
-  useEffect(()=>{
-    if(messages?.length>0){
-      const role = messages[messages?.length-1].role;
-      if(role=='user'){
-      GetAiResponse();
-      }
+  useEffect(() => {
+    if (messages.length > 0) {
+        const lastMessage = messages[messages.length - 1];
+
+        if (lastMessage.role === 'user' && !isFetchingResponse.current) {
+            isFetchingResponse.current = true; // ✅ Prevent duplicate calls
+            GetAiResponse(lastMessage.content).finally(() => {
+                isFetchingResponse.current = false; // ✅ Reset after response
+            });
+        }
     }
-  },[messages])
+}, [messages]);
 
 
+async function GetAiResponse(lastUserMessage) {
+  const PROMPT = lastUserMessage + Prompt.CHAT_PROMPT;  // Use only the last message
 
-  async function GetAiResponse(){
-    const PROMPT = JSON.stringify(messages)+Prompt.CHAT_PROMPT;
-   const response = await axios.post('http://localhost:3000/AiResponse',{
-    PROMPT:PROMPT
-   });
-   console.log(response.data.result)
+  try {
+      const response = await axios.post('http://localhost:3000/AiResponse', { PROMPT });
+      setMessages(prev => [
+          ...prev,
+          { role: 'ai', content: response.data.result }
+      ]);
+  } catch (err) {
+      console.error("AI Response Error:", err);
   }
-
+}
   return (
     <>
   <div className="relative h-[100vh]">
@@ -68,7 +77,7 @@ export default function Workspace() {
         </div>
         </div>
 
-        <textarea placeholder="How can GenWeb AI help you today" className="custom-scrollbar resize-none min-w-[480px] left-3 min-h-32 max-h-96 p-2 pr-9 pb-5 absolute bottom-2 bg-gray-900 text-white border border-gray-700  rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
+        <textarea  placeholder="How can GenWeb AI help you today" className="custom-scrollbar resize-none min-w-[480px] left-3 min-h-32 max-h-96 p-2 pr-9 pb-5 absolute bottom-2 bg-gray-900 text-white border border-gray-700  rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
           
         </textarea>
 
