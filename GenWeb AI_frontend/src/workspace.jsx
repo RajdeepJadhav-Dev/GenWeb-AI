@@ -5,11 +5,14 @@ import Background from "./components/Background";
 import Bolt from "./icons/Bolt";
 import { Button } from "./components/ui/button";
 import Prompt from './data/prompt'
+import { ChevronRight } from "lucide-react"
 
 export default function Workspace() {
   const { WorkspaceId } = useParams();  // Extracting the WorkspaceId from the URL
   const [messages, setMessages] = useState([]);  // State to hold messages
   const isFetchingResponse = useRef(false);
+  //to extract messages from chatview of the workspace
+  const [ChatViewMessages,setChatViewMessages] = useState('');
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -76,10 +79,11 @@ async function GetAiResponse(lastUserMessage) {
             code view
         </div>
         </div>
-
-        <textarea  placeholder="How can GenWeb AI help you today" className="custom-scrollbar resize-none min-w-[480px] left-3 min-h-32 max-h-96 p-2 pr-9 pb-5 absolute bottom-2 bg-gray-900 text-white border border-gray-700  rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
-          
-        </textarea>
+    <div className="relative">
+        <textarea onChange={(e)=>setChatViewMessages(e.target.value)}  placeholder="How can GenWeb AI help you today" className="custom-scrollbar resize-none min-w-[480px] left-3 min-h-32 max-h-96 p-2 pr-9 pb-5 absolute bottom-2 bg-gray-900 text-white border border-gray-700  rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"> </textarea>
+        <Button onClick={()=>GetAiResponse(ChatViewMessages)} className='text-white absolute bottom-24 left-[450px] bg-purple-800 hover:bg-purple-600 hover:text-white h-7 w-7' variant='ghost' size='icon'><ChevronRight></ChevronRight></Button> 
+       
+        </div>
 
         </div>
         </div>
