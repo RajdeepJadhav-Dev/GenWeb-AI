@@ -1,11 +1,13 @@
 const express =  require('express');
 const app = express();
 const mongoose = require('mongoose');
+const { chatSession } = require("./AiModel.js");
 const cors = require('cors');
 const {userModel,WorkSpaceModel} = require('./db');
 app.use(cors());
 mongoose.connect('mongodb+srv://210rajdeep:13132030931@cluster0.izjm5.mongodb.net/GenWeb_AI');
 app.use(express.json())
+
 
 app.post('/login',async (req,res)=>{
     const {name,email,picture,sub} = req.body.userInfo;
@@ -33,18 +35,61 @@ res.json({
 
 
 //testing for the first prompt from the landing page
-app.post('/prompt', async (req,res)=>{
-    const {messeges,userSub} = req.body;
-   const response = await WorkSpaceModel.create({
-        messeges:[{content:messeges[0].content,role:messeges[0].role}],
-        userSub:userSub
+app.post('/prompt', async (req, res) => {
+    const { messeges, userSub } = req.body;
+
+    try {
+        // Check if a workspace already exists for the given userSub
+        let workspace = await WorkSpaceModel.findOne({ userSub: userSub });
+
+        if (workspace) {
+            // If workspace exists, push the new message into the existing messeges array
+            workspace.messeges.push({ content: messeges.content, role: messeges.role });
+            await workspace.save();
+            res.json({
+                msg: 'Message successfully added to existing workspace',
+                workspaceId: workspace._id
+            });
+        } else {
+            // If workspace does not exist, create a new workspace
+            const newWorkspace = await WorkSpaceModel.create({
+                messeges: [{ content: messeges.content, role: messeges.role }],
+                userSub: userSub
+            });
+
+            res.json({
+                msg: 'New workspace created and message stored',
+                workspaceId: newWorkspace._id
+            });
+        }
+    } catch (error) {
+        console.error('Error handling prompt:', error);
+        res.status(500).json({ msg: 'Internal server error' });
+    }
+});
+
+//for fetching messeges
+app.get('/get/:WorkSpaceId',async (req,res)=>{
+    const WorkspaceId = req.params.WorkSpaceId
+    const response = await WorkSpaceModel.findOne({
+        _id: WorkspaceId
     })
     res.json({
-        msg:'messege succesfully stored',
-        workspaceId:response._id
+        messeges:response.messeges
     })
 
 })
 
-
 app.listen(3000,()=>console.log('port 3000 running...'))
+
+
+// gemini response
+app.post('/AiResponse',async (req,res)=>{
+    const {PROMPT} = req.body;
+    prompt = String(PROMPT)
+    const result = await chatSession.sendMessage(PROMPT);
+    const AIresp = result.response.text();
+    res.json({
+        result:AIresp
+    })
+})

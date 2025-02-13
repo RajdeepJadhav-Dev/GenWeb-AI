@@ -40,8 +40,8 @@ export default function Hero(){
         }
         
          axios.post('http://localhost:3000/prompt',{
-            messeges:[{content:input,
-                role:'user'}],
+            messeges:{content:input,
+                role:'user'},
             userSub:userSub
         })  .then((response) => {
             navigate('/Workspace/'+response.data.workspaceId); 
