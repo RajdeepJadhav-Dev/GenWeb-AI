@@ -8,6 +8,7 @@ import Prompt from './data/prompt'
 import { ChevronRight } from "lucide-react"
 import { Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import CodeView from "./components/CodeView";
 
 
 export default function Workspace() {
@@ -121,8 +122,8 @@ const handleKeyDown = (e) => {
           </div> : null}
         </div>
        
-        <div className="text-white text-xl border-white border-2 h-[650px] w-[980px]">
-            code view
+        <div className=" h-[650px] w-[980px]">
+          <CodeView></CodeView>
         </div>
         </div>
     <div className="relative">
