@@ -82,7 +82,7 @@ app.get('/get/:WorkSpaceId',async (req,res)=>{
 
 })
 
-app.listen(3000,()=>console.log('port 3000 running...'))
+
 
 
 // gemini response
@@ -95,3 +95,6 @@ app.post('/AiResponse',async (req,res)=>{
         result:AIresp
     })
 })
+
+
+app.listen(3000,()=>console.log('port 3000 running...'))

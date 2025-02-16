@@ -26,7 +26,7 @@ export default function Hero(){
     const [openDialog,SetopenDialog] = useState(false);
 
    
-
+//initial messege send after which we switch to the workspace page
     async function Prompt(input){
 
     //used json parse because localstorage stores everuthing as a string 
@@ -52,6 +52,14 @@ export default function Hero(){
         });
         
     }
+
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault(); // Prevents new line in the textarea
+          Prompt(UserInput);
+        }
+      };
    
     return(
         <>
@@ -60,7 +68,7 @@ export default function Hero(){
         <ul className="flex  flex-col justify-center items-center ">
         <li><h1 className="text-5xl text-white font-bold m-4 pl-5 ">What do you want to build?</h1></li>
         <li><h2 className="text-gray-400 font-bold ">Prompt, run, edit, and deploy full-stack web apps.</h2></li>
-        <li className="m-4 relative  "><textarea onChange={(e)=>SetUserInput(e.target.value)} placeholder='how can i help you today' className="custom-scrollbar resize-none min-w-96 min-h-32 max-h-96 p-2 pr-9 pb-5  bg-gray-900 text-white border border-gray-700  rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500" name="" id=""></textarea>
+        <li className="m-4 relative  "><textarea onKeyDown={handleKeyDown} onChange={(e)=>SetUserInput(e.target.value)} placeholder='how can i help you today' className="custom-scrollbar resize-none min-w-96 min-h-32 max-h-96 p-2 pr-9 pb-5  bg-gray-900 text-white border border-gray-700  rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500" name="" id=""></textarea>
         {UserInput ? <Button onClick={()=>Prompt(UserInput)} className='text-white absolute right-2 top-2 bg-purple-800 hover:bg-purple-600 hover:text-white h-7 w-7' variant='ghost' size='icon'><ChevronRight /></Button> : null}
         <Link></Link>
         </li>
