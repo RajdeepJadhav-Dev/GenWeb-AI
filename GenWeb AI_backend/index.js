@@ -2,13 +2,14 @@ const express =  require('express');
 const app = express();
 const mongoose = require('mongoose');
 const { chatSession } = require("./AiModel.js");
+const {GenAiCode} = require("./AiModel.js");
 const cors = require('cors');
 const {userModel,WorkSpaceModel} = require('./db');
 app.use(cors());
 mongoose.connect('mongodb+srv://210rajdeep:13132030931@cluster0.izjm5.mongodb.net/GenWeb_AI');
 app.use(express.json())
 
-
+//login
 app.post('/login',async (req,res)=>{
     const {name,email,picture,sub} = req.body.userInfo;
   
@@ -34,7 +35,7 @@ res.json({
 })
 
 
-//testing for the first prompt from the landing page
+//first prompt from the landing page
 app.post('/prompt', async (req, res) => {
     const { messeges, userSub } = req.body;
 
@@ -85,7 +86,7 @@ app.get('/get/:WorkSpaceId',async (req,res)=>{
 
 
 
-// gemini response
+// gemini chat response
 app.post('/AiResponse',async (req,res)=>{
     const {PROMPT} = req.body;
     prompt = PROMPT
@@ -95,6 +96,23 @@ app.post('/AiResponse',async (req,res)=>{
         result:AIresp
     })
 })
+
+// gemini code response
+app.post('/AiCodeResponse',async (req,res)=>{
+    
+    const CodePROMPT = req.body.CodePROMPT;
+    const result = await GenAiCode.sendMessage(CodePROMPT);
+    const AICODEresp = result.response.text();
+    
+    res.json({
+        result:AICODEresp
+    })
+   
+
+    
+  
+})
+
 
 
 app.listen(3000,()=>console.log('port 3000 running...'))

@@ -9,6 +9,8 @@ import { ChevronRight } from "lucide-react"
 import { Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import CodeView from "./components/CodeView";
+import { AiCodeResponse } from "./atoms";
+import { useRecoilState } from "recoil";
 
 
 export default function Workspace() {
@@ -16,6 +18,7 @@ export default function Workspace() {
   //to lead the picture of the user in the chat
   const userInfo = JSON.parse(localStorage.getItem('userInfo')); // Parse JSON
   const picture = userInfo?.data?.picture;
+ 
 
   const { WorkspaceId } = useParams();  // Extracting the WorkspaceId from the URL
   const [messages, setMessages] = useState([]);  // State to hold messages
@@ -24,6 +27,8 @@ export default function Workspace() {
   const [ChatViewMessages,setChatViewMessages] = useState('');
   // loader while loading message
   const [loading,setLoading] = useState(false);
+  //atom for AiCodeResponse
+  const [newfiledata,setnewfiledata] = useRecoilState(AiCodeResponse);
 
 
   useEffect(() => {
@@ -64,18 +69,24 @@ async function GetAiResponse(lastUserMessage) {
     if (isFetching.current) return; // Prevent duplicate calls
     isFetching.current = true;
 
-    console.log("🔵 GetAiResponse called with message:", lastUserMessage);
 
     setMessages(prev => [...prev, { role: 'user', content: lastUserMessage }]);
     setChatViewMessages('');
     setLoading(true);
 
+    //prompt for ai chat
     const PROMPT = lastUserMessage + Prompt.CHAT_PROMPT;
+    //prompt for ai code
+    const CodePROMPT = lastUserMessage + Prompt.CODE_GEN_PROMPT;
 
     try {
+      //chat ai response
         const response = await axios.post('http://localhost:3000/AiResponse', { PROMPT });
-
-        console.log("🟢 AI Response:", response.data.result);
+      //code ai response
+      const res = await axios.post('http://localhost:3000/AiCodeResponse',{CodePROMPT:CodePROMPT});
+      setnewfiledata(res.data.result);
+      console.log(res.data.result);
+     
 
         setMessages(prev => [...prev, { role: 'ai', content: response.data.result }]);
     } catch (err) {

@@ -11,3 +11,8 @@ export const UserDetails = atom({
     key:'UserDetails',
     default:null
 })
+
+export const AiCodeResponse = atom({
+    key:'AiCodeResponse',
+    default:''
+})

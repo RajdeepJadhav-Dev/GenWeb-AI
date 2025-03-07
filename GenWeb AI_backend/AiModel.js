@@ -21,6 +21,13 @@ const {
     responseMimeType: "text/plain",
   };
   
+  const CodegenerationConfig = {
+    temperature: 1,
+    topP: 0.95,
+    topK: 40,
+    maxOutputTokens: 8192,
+    responseMimeType: "application/json",
+  };
  
      const chatSession = model.startChat({
       generationConfig,
@@ -28,4 +35,9 @@ const {
       ],
     });
 
-    module.exports = {chatSession};
+    const GenAiCode = model.startChat({
+      generationConfig:CodegenerationConfig,
+      history:[]
+    })
+
+    module.exports = {chatSession,GenAiCode};

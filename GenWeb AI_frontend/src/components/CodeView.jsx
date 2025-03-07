@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import {
     SandpackProvider,
@@ -8,12 +8,30 @@ import {
     SandpackFileExplorer 
   } from "@codesandbox/sandpack-react";
 import Lookup from '@/data/Lookup';
+import { AiCodeResponse } from '@/atoms';
+import { useRecoilValue } from 'recoil';
 
 
 const CodeView = () => {
 
-    const [activeTab,setactiveTab] = useState('code');
+      const [activeTab,setactiveTab] = useState('code');
+      const [files,setfiles] = useState(Lookup?.DEFAULT_FILE);
+      let newfiledata = useRecoilValue(AiCodeResponse);
+      if(newfiledata){
+        newfiledata = JSON.parse(newfiledata)
+      }
+     
+      
+    
+    
 
+      useEffect(() => {
+      setfiles((files) => ({
+        ...files,
+        ...newfiledata.files
+    }));// Merge correctly
+        console.log(files);
+      }, [newfiledata]);
 
   return (
     <>
@@ -27,7 +45,7 @@ const CodeView = () => {
     </div>
 
 
-    <SandpackProvider customSetup={{
+    <SandpackProvider files={files}  options={{externalResources:['https://cdn.tailwindcss.com']}} customSetup={{
     dependencies: {
         ...Lookup.DEPENDANCY
     }
