@@ -5,7 +5,7 @@ import Background from "./components/Background";
 import Bolt from "./icons/Bolt";
 import { Button } from "./components/ui/button";
 import Prompt from './data/prompt'
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, Loader2Icon } from "lucide-react"
 import { Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import CodeView from "./components/CodeView";
@@ -29,6 +29,8 @@ export default function Workspace() {
   const [loading,setLoading] = useState(false);
   //atom for AiCodeResponse
   const [newfiledata,setnewfiledata] = useRecoilState(AiCodeResponse);
+  //loader for the codeview
+  //const [codeloading,setcodeloading] = useState(false);
 
 
   useEffect(() => {
@@ -66,6 +68,7 @@ export default function Workspace() {
 const isFetching = useRef(false);
 
 async function GetAiResponse(lastUserMessage) {
+ // setcodeloading(true);
     if (isFetching.current) return; // Prevent duplicate calls
     isFetching.current = true;
 
@@ -85,7 +88,7 @@ async function GetAiResponse(lastUserMessage) {
       //code ai response
       const res = await axios.post('http://localhost:3000/AiCodeResponse',{CodePROMPT:CodePROMPT});
       setnewfiledata(res.data.result);
-      console.log(res.data.result);
+ 
      
 
         setMessages(prev => [...prev, { role: 'ai', content: response.data.result }]);
@@ -95,6 +98,7 @@ async function GetAiResponse(lastUserMessage) {
         setLoading(false);
         isFetching.current = false;
     }
+  //  setcodeloading(false);
 }
 
 
@@ -129,12 +133,16 @@ const handleKeyDown = (e) => {
            <div key={key} className='bg-chat_color m-4 p-4 rounded-2xl leading-7 font-thin'><ReactMarkdown >{obj.content}</ReactMarkdown></div> ))}
           {loading ? <div className="flex ml-4 gap-x-2 bg-chat_color m-4 p-4 rounded-2xl">
           <Loader2 className="animate-spin h-6 w-6 text-purple-500" />
-          <h1 className="">Generating response.....</h1>
+        
           </div> : null}
         </div>
        
         <div className=" h-[650px] w-[980px]">
           <CodeView></CodeView>
+     {/*     <div className="p-10 pt-72 pl-[470px] bg-gray-900 opacity-80 relative bottom-[659px] rounded-lg w-full h-full items-center justify-center">
+          <Loader2Icon className="animate-spin h-20 w-20 text-white "/>
+          <h2 className="text-white relative right-4">Generating files.....</h2>
+          </div>*/}
         </div>
         </div>
     <div className="relative">
@@ -146,7 +154,7 @@ const handleKeyDown = (e) => {
         </div>
         </div>
        
-       
+   
 
     </>
   );

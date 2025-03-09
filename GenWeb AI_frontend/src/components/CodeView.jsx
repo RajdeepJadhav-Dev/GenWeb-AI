@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import {
     SandpackProvider,
     SandpackLayout,
@@ -8,12 +8,12 @@ import {
     SandpackFileExplorer 
   } from "@codesandbox/sandpack-react";
 import Lookup from '@/data/Lookup';
-import { AiCodeResponse } from '@/atoms';
+import { AiCodeResponse, PromptState } from '@/atoms';
 import { useRecoilValue } from 'recoil';
 
 
 const CodeView = () => {
-
+ 
       const [activeTab,setactiveTab] = useState('code');
       const [files,setfiles] = useState(Lookup?.DEFAULT_FILE);
       let newfiledata = useRecoilValue(AiCodeResponse);
@@ -23,14 +23,15 @@ const CodeView = () => {
      
       
     
-    
+   const prevfiledata = useRef(null); 
 
       useEffect(() => {
+        if(JSON.stringify(newfiledata) === JSON.stringify(prevfiledata.current)){return;}
       setfiles((files) => ({
         ...files,
         ...newfiledata.files
     }));// Merge correctly
-        console.log(files);
+    prevfiledata.current = newfiledata
       }, [newfiledata]);
 
   return (
