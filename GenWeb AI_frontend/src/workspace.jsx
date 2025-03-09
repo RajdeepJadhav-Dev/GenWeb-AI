@@ -30,7 +30,7 @@ export default function Workspace() {
   //atom for AiCodeResponse
   const [newfiledata,setnewfiledata] = useRecoilState(AiCodeResponse);
   //loader for the codeview
-  //const [codeloading,setcodeloading] = useState(false);
+  const [codeloading,setcodeloading] = useState(false);
 
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function Workspace() {
 const isFetching = useRef(false);
 
 async function GetAiResponse(lastUserMessage) {
- // setcodeloading(true);
+ setcodeloading(true);
     if (isFetching.current) return; // Prevent duplicate calls
     isFetching.current = true;
 
@@ -98,7 +98,7 @@ async function GetAiResponse(lastUserMessage) {
         setLoading(false);
         isFetching.current = false;
     }
-  //  setcodeloading(false);
+   setcodeloading(false);
 }
 
 
@@ -139,10 +139,10 @@ const handleKeyDown = (e) => {
        
         <div className=" h-[650px] w-[980px]">
           <CodeView></CodeView>
-     {/*     <div className="p-10 pt-72 pl-[470px] bg-gray-900 opacity-80 relative bottom-[659px] rounded-lg w-full h-full items-center justify-center">
+       {codeloading ? <div className="p-10 pt-72 pl-[470px] bg-gray-900 opacity-80 relative bottom-[659px] rounded-lg w-full h-full items-center justify-center">
           <Loader2Icon className="animate-spin h-20 w-20 text-white "/>
           <h2 className="text-white relative right-4">Generating files.....</h2>
-          </div>*/}
+          </div> : null }
         </div>
         </div>
     <div className="relative">
