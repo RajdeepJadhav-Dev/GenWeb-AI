@@ -10,6 +10,7 @@ import {
 import Lookup from '@/data/Lookup';
 import { AiCodeResponse, PromptState } from '@/atoms';
 import { useRecoilValue } from 'recoil';
+import SandPackClient from './SandPackClient';
 
 
 const CodeView = () => {
@@ -46,7 +47,7 @@ const CodeView = () => {
     </div>
 
 
-    <SandpackProvider files={files}  options={{externalResources:['https://cdn.tailwindcss.com']}} customSetup={{
+    <SandpackProvider files={files}   options={{externalResources:['https://cdn.tailwindcss.com']}} customSetup={{
     dependencies: {
         ...Lookup.DEPENDANCY
     }
@@ -58,7 +59,7 @@ const CodeView = () => {
       </>
         :
       <>
-      <SandpackPreview style={{height:'80vh'}} showNavigator={true}/>
+     <SandPackClient></SandPackClient>
       </>
        }
     </SandpackLayout>

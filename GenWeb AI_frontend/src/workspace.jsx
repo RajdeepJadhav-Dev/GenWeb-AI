@@ -11,7 +11,7 @@ import ReactMarkdown from "react-markdown";
 import CodeView from "./components/CodeView";
 import { AiCodeResponse } from "./atoms";
 import { useRecoilState } from "recoil";
-
+import { action } from "./atoms";
 
 export default function Workspace() {
 
@@ -31,6 +31,8 @@ export default function Workspace() {
   const [newfiledata,setnewfiledata] = useRecoilState(AiCodeResponse);
   //loader for the codeview
   const [codeloading,setcodeloading] = useState(false);
+  //saving the value export or deploy in atom so that it can be used in SandPackClient for the actual implemenation
+  const [Navaction,setNavaction] = useRecoilState(action);
 
 
   useEffect(() => {
@@ -122,8 +124,8 @@ const handleKeyDown = (e) => {
        <div className="h-[10vh] flex justify-between items-center px-4">
           <h1 className="text-white text-2xl flex items-center"><Bolt></Bolt> GenWeb AI</h1>
           <ul className="flex gap-x-2 px-2">
-        <><li><Button className='px-5' variant="ghost">Export</Button></li>
-            <li><Button className='bg-purple-800 px-5 text-white' variant="secondary">Deploy</Button></li></>
+        <><li><Button onClick={()=>setNavaction('Export')} className='px-5' variant="ghost">Export</Button></li>
+            <li><Button onClick={()=>setNavaction('Deploy')} className='bg-purple-800 px-5 text-white' variant="secondary">Deploy</Button></li></>
           </ul>
         </div>
 
