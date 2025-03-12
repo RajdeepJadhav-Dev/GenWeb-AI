@@ -34,6 +34,17 @@ res.json({
 }
 })
 
+//signout
+
+app.post('/signout',async (req,res)=>{
+    const email = req.body.email;
+    await userModel.deleteOne({
+        email:email
+    })
+    res.json({
+        msg:'signed out succesfully'
+    })
+})
 
 //first prompt from the landing page
 app.post('/prompt', async (req, res) => {
@@ -106,10 +117,7 @@ app.post('/AiCodeResponse',async (req,res)=>{
     
     res.json({
         result:AICODEresp
-    })
-   
-
-    
+    })   
   
 })
 

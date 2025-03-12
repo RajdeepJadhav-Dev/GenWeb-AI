@@ -34,9 +34,9 @@ const googleLogin = useGoogleLogin({
       { headers: { Authorization: 'Bearer '+tokenResponse?.access_token } },
     );
 
-    console.log(userInfo);
+    
 
-    //not sure if this setting of user details to the atom is neccesory but still keeping it for caution
+    //not sure if this setting of user details to the atom is neccesory but still keeping it for caution.......me from the future....now i can use the to change signin in button to signout out button in the navnar
     setuser(userInfo);
 
     //setting the userInfo to the localstorage so that the signindialog dosent appear again on refresh

@@ -12,6 +12,7 @@ import CodeView from "./components/CodeView";
 import { AiCodeResponse } from "./atoms";
 import { useRecoilState } from "recoil";
 import { action } from "./atoms";
+import UserIcon from "./components/UserIcon";
 
 export default function Workspace() {
 
@@ -35,8 +36,10 @@ export default function Workspace() {
   const [Navaction,setNavaction] = useRecoilState(action);
 
 
+
   useEffect(() => {
     const fetchMessages = async () => {
+    
       try {
         const res = await axios.get(`http://localhost:3000/get/${WorkspaceId}`);
        // console.log('Fetched Messages:', res.data.messeges);  // Check what data is fetched
@@ -45,6 +48,7 @@ export default function Workspace() {
         console.error('Error fetching messages:', err);
         setMessages('Error loading messages');  // Show error message in UI
       }
+      
     };
 
     fetchMessages();
@@ -131,8 +135,23 @@ const handleKeyDown = (e) => {
 
     <div className="flex gap-x-4"> 
         <div className="text-white relative z-10  w-[500px] h-[500px] overflow-auto custom-scrollbar">
-          { messages.map((obj,key)=>(obj.role == 'user' ?  <div key={key} className='bg-chat_color flex flex-wrap items-center gap-x-2 m-4 p-4 rounded-2xl leading-7 font-thin'><img className=" rounded-full h-8 w-8" src={picture} alt="picture" /><ReactMarkdown >{obj.content}</ReactMarkdown></div> :
-           <div key={key} className='bg-chat_color m-4 p-4 rounded-2xl leading-7 font-thin'><ReactMarkdown >{obj.content}</ReactMarkdown></div> ))}
+        {messages.filter((msg, index, self) => 
+  index === self.findIndex((m) => m.content === msg.content)
+).map((obj, key) => (
+  obj.role === 'user' ? 
+    <div key={key} className='bg-chat_color flex flex-wrap items-center gap-x-2 m-4 p-4 rounded-2xl leading-7 font-thin'>
+      <img 
+        className="rounded-full h-8 w-8" 
+        src={picture}  
+        onError={(e) => { e.target.src = './components/icons8-user-24.png'; }}  
+      />
+      <ReactMarkdown>{obj.content}</ReactMarkdown>
+    </div> 
+  : 
+    <div key={key} className='bg-chat_color m-4 p-4 rounded-2xl leading-7 font-thin'>
+      <ReactMarkdown>{obj.content}</ReactMarkdown>
+    </div>
+))}
           {loading ? <div className="flex ml-4 gap-x-2 bg-chat_color m-4 p-4 rounded-2xl">
           <Loader2 className="animate-spin h-6 w-6 text-purple-500" />
         

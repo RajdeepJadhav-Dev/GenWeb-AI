@@ -6,6 +6,8 @@ key:'PromptState',
 default:''
 })
 
+
+//can be used to change the signin button in the navbar to the signout button
 export const UserDetails = atom({
     key:'UserDetails',
     default:null

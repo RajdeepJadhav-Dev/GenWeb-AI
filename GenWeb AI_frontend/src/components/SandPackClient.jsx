@@ -18,7 +18,7 @@ export default function SandPackClient(){
     // to know the use wants to deploy the code or export it
        const Navaction = useRecoilValue(action)
 
-        const previewRef = useRef();
+        const previewRef = useRef(null);
         const {SandPack} = useSandpack();
 
 
