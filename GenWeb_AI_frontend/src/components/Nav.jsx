@@ -36,7 +36,7 @@ const picture = userInfo?.data?.picture;
 
   async function Signout(){
     localStorage.removeItem("userInfo");
-    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signout`,{email:userInfo?.data?.email});
+    const res = await axios.post('https://gen-web-ai-ten.vercel.app/signout',{email:userInfo?.data?.email});
     resetUserDetails();
   }
 

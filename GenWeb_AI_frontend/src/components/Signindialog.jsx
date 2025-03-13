@@ -42,7 +42,7 @@ const googleLogin = useGoogleLogin({
     //setting the userInfo to the localstorage so that the signindialog dosent appear again on refresh
     localStorage.setItem('userInfo',JSON.stringify(userInfo))
     closeDialog(false);
-     response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`,{
+     response = await axios.post('https://gen-web-ai-ten.vercel.app/login',{
       userInfo:userInfo.data
     })
 
