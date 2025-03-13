@@ -5,7 +5,10 @@ const { chatSession } = require("./AiModel.js");
 const {GenAiCode} = require("./AiModel.js");
 const cors = require('cors');
 const {userModel,WorkSpaceModel} = require('./db');
+const port = process.env.port || 3000;
+
 app.use(cors());
+
 mongoose.connect('mongodb+srv://210rajdeep:13132030931@cluster0.izjm5.mongodb.net/GenWeb_AI');
 app.use(express.json())
 
@@ -123,4 +126,6 @@ app.post('/AiCodeResponse',async (req,res)=>{
 
 
 
-module.exports = app;
+app.listen(port,()=>{
+    console.log('servern runing....');
+})
