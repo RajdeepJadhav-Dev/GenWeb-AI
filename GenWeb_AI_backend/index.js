@@ -8,7 +8,7 @@ const {userModel,WorkSpaceModel} = require('./db');
 const port = process.env.port || 3000;
 
 app.use(cors({
-    origin: "https://gen-web-ai-frontend-jcq4ipaaf-rajdeepjadhav-devs-projects.vercel.app", 
+    origin: "gen-web-ai-frontend.vercel.app", 
     methods: "GET,POST,PUT,DELETE,OPTIONS",
     allowedHeaders: "Content-Type,Authorization",
     credentials: true
