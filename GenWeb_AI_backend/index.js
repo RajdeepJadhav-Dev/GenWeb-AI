@@ -7,7 +7,14 @@ const cors = require('cors');
 const {userModel,WorkSpaceModel} = require('./db');
 const port = process.env.port || 3000;
 
-app.use(cors());
+app.use(cors({
+    origin: "https://gen-web-ai-frontend-jcq4ipaaf-rajdeepjadhav-devs-projects.vercel.app", 
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true
+}));
+app.options('*', cors());
+
 
 mongoose.connect('mongodb+srv://210rajdeep:13132030931@cluster0.izjm5.mongodb.net/GenWeb_AI');
 app.use(express.json())
