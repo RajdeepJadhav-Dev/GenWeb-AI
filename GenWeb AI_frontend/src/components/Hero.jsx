@@ -39,7 +39,7 @@ export default function Hero(){
             return;
         }
         
-         axios.post('http://localhost:3000/prompt',{
+         axios.post(`${import.meta.env.VITE_BACKEND_URL}/prompt`,{
             messeges:{content:input,
                 role:'user'},
             userSub:userSub
