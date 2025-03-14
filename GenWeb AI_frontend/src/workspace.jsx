@@ -41,7 +41,7 @@ export default function Workspace() {
     const fetchMessages = async () => {
     
       try {
-        const res = await axios.get(`genweb-ai-production.up.railway.app/get/${WorkspaceId}`);
+        const res = await axios.get(`https://genweb-ai.onrender.com/get/${WorkspaceId}`);
        // console.log('Fetched Messages:', res.data.messeges);  // Check what data is fetched
        setMessages([res.data.messeges[0]]);  // ✅ Store the last message as an array
       } catch (err) {
@@ -90,9 +90,9 @@ async function GetAiResponse(lastUserMessage) {
 
     try {
       //chat ai response
-        const response = await axios.post('genweb-ai-production.up.railway.app/AiResponse', { PROMPT });
+        const response = await axios.post('https://genweb-ai.onrender.com/AiResponse', { PROMPT });
       //code ai response
-      const res = await axios.post('genweb-ai-production.up.railway.app/AiCodeResponse',{CodePROMPT:CodePROMPT});
+      const res = await axios.post('https://genweb-ai.onrender.com/AiCodeResponse',{CodePROMPT:CodePROMPT});
       setnewfiledata(res.data.result);
  
      
