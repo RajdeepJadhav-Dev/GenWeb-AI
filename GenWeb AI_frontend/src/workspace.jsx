@@ -41,7 +41,7 @@ export default function Workspace() {
     const fetchMessages = async () => {
     
       try {
-        const res = await axios.get(`https://gen-web-ai-ten.vercel.app/get/${WorkspaceId}`);
+        const res = await axios.get(`http://localhost:3000/get/${WorkspaceId}`);
        // console.log('Fetched Messages:', res.data.messeges);  // Check what data is fetched
        setMessages([res.data.messeges[0]]);  // ✅ Store the last message as an array
       } catch (err) {
