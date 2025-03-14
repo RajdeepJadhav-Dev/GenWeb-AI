@@ -42,7 +42,7 @@ const googleLogin = useGoogleLogin({
     //setting the userInfo to the localstorage so that the signindialog dosent appear again on refresh
     localStorage.setItem('userInfo',JSON.stringify(userInfo))
     closeDialog(false);
-     response = await axios.post('http://localhost:3000/login',{
+     response = await axios.post('genweb-ai-production.up.railway.app/login',{
       userInfo:userInfo.data
     })
 
