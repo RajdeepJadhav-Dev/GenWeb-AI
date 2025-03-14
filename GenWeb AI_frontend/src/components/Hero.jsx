@@ -39,7 +39,7 @@ export default function Hero(){
             return;
         }
         
-         axios.post('genweb-ai-production.up.railway.app/prompt',{
+         axios.post('https://genweb-ai.onrender.com/prompt',{
             messeges:{content:input,
                 role:'user'},
             userSub:userSub

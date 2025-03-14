@@ -36,7 +36,7 @@ const picture = userInfo?.data?.picture;
 
   async function Signout(){
     localStorage.removeItem("userInfo");
-    const res = await axios.post('genweb-ai-production.up.railway.app/signout',{email:userInfo?.data?.email});
+    const res = await axios.post('https://genweb-ai.onrender.com/signout',{email:userInfo?.data?.email});
     resetUserDetails();
   }
 
