@@ -3,9 +3,21 @@ const app = express();
 const mongoose = require('mongoose');
 const { chatSession } = require("./AiModel.js");
 const {GenAiCode} = require("./AiModel.js");
+const PORT = process.env.PORT || 3000;
 const cors = require('cors');
 const {userModel,WorkSpaceModel} = require('./db');
-app.use(cors());
+// ✅ CORS Setup
+const corsOptions = {
+    origin: "*", // Allow all origins (replace with frontend URL for security)
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+};
+app.use(cors(corsOptions));
+ // ✅ Security Headers
+app.use((req, res, next) => {
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+    next();
+});
 mongoose.connect('mongodb+srv://210rajdeep:13132030931@cluster0.izjm5.mongodb.net/GenWeb_AI');
 app.use(express.json())
 
@@ -123,4 +135,4 @@ app.post('/AiCodeResponse',async (req,res)=>{
 
 
 
-app.listen(3000,()=>console.log('port 3000 running...'))
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}...`));
