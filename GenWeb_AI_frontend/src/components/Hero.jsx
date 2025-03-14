@@ -39,7 +39,7 @@ export default function Hero(){
             return;
         }
         
-         axios.post('https://gen-web-ai-ten.vercel.app/prompt',{
+         axios.post('http://localhost:3000/prompt',{
             messeges:{content:input,
                 role:'user'},
             userSub:userSub

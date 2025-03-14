@@ -7,29 +7,12 @@ const { userModel, WorkSpaceModel } = require("./db");
 const app = express();
 const port = process.env.PORT || 3000;
 
-// ✅ Allow multiple frontend origins dynamically
-const allowedOrigins = [
-  "https://gen-web-ai-frontend.vercel.app",
-  "https://gen-web-ai-frontend-jcq4ipaaf-rajdeepjadhav-devs-projects.vercel.app"
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: "GET,POST,PUT,DELETE,OPTIONS",
-  allowedHeaders: "Content-Type,Authorization",
-  credentials: true
-}));
+app.use(cors());
 
 app.use(express.json());
 
 // ✅ MongoDB Connection (Use Environment Variables for Credentials)
-mongoose.connect(process.env.MONGO_URI || "your_mongodb_connection_string_here", {
+mongoose.connect(process.env.MONGO_URI || "mongodb+srv://210rajdeep:13132030931@cluster0.izjm5.mongodb.net/GenWebAi", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })

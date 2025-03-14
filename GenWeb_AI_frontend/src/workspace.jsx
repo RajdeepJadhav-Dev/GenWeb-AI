@@ -90,9 +90,9 @@ async function GetAiResponse(lastUserMessage) {
 
     try {
       //chat ai response
-        const response = await axios.post('https://gen-web-ai-ten.vercel.app/AiResponse', { PROMPT });
+        const response = await axios.post('http://localhost:3000/AiResponse', { PROMPT });
       //code ai response
-      const res = await axios.post('https://gen-web-ai-ten.vercel.app/AiCodeResponse',{CodePROMPT:CodePROMPT});
+      const res = await axios.post('http://localhost:3000/AiCodeResponse',{CodePROMPT:CodePROMPT});
       setnewfiledata(res.data.result);
  
      
