@@ -18,9 +18,11 @@ app.use((req, res, next) => {
     res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
     next();
 });
-mongoose.connect('mongodb+srv://210rajdeep:13132030931@cluster0.izjm5.mongodb.net/GenWeb_AI');
-app.use(express.json())
 
+app.use(express.json())
+mongoose.connect('mongodb+srv://210rajdeep:13132030931@cluster0.izjm5.mongodb.net/GenWeb_AI', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB connection error:", err));
 //login
 app.post('/login',async (req,res)=>{
     const {name,email,picture,sub} = req.body.userInfo;
