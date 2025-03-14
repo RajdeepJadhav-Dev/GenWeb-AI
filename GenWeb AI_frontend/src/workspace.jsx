@@ -41,7 +41,7 @@ export default function Workspace() {
     const fetchMessages = async () => {
     
       try {
-        const res = await axios.get(`http://localhost:3000/get/${WorkspaceId}`);
+        const res = await axios.get(`genweb-ai-production.up.railway.app/get/${WorkspaceId}`);
        // console.log('Fetched Messages:', res.data.messeges);  // Check what data is fetched
        setMessages([res.data.messeges[0]]);  // ✅ Store the last message as an array
       } catch (err) {
@@ -90,9 +90,9 @@ async function GetAiResponse(lastUserMessage) {
 
     try {
       //chat ai response
-        const response = await axios.post('http://localhost:3000/AiResponse', { PROMPT });
+        const response = await axios.post('genweb-ai-production.up.railway.app/AiResponse', { PROMPT });
       //code ai response
-      const res = await axios.post('http://localhost:3000/AiCodeResponse',{CodePROMPT:CodePROMPT});
+      const res = await axios.post('genweb-ai-production.up.railway.app/AiCodeResponse',{CodePROMPT:CodePROMPT});
       setnewfiledata(res.data.result);
  
      
