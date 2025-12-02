@@ -42,7 +42,7 @@ const googleLogin = useGoogleLogin({
     //setting the userInfo to the localstorage so that the signindialog dosent appear again on refresh
     localStorage.setItem('userInfo',JSON.stringify(userInfo))
     closeDialog(false);
-     response = await axios.post('https://genweb-ai.onrender.com/login',{
+     response = await axios.post(import.meta.env.VITE_API_URL+"/login",{
       userInfo:userInfo.data
     })
 

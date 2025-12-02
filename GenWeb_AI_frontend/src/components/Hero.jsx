@@ -39,7 +39,7 @@ export default function Hero(){
             return;
         }
         
-         axios.post('https://genweb-ai.onrender.com/prompt',{
+         axios.post(import.meta.env.VITE_API_URL+"/prompt",{
             messeges:{content:input,
                 role:'user'},
             userSub:userSub

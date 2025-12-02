@@ -5,7 +5,7 @@ const { chatSession } = require("./AiModel.js");
 const {GenAiCode} = require("./AiModel.js");
 const PORT = process.env.PORT || 3000;
 const cors = require('cors');
-const {userModel,WorkSpaceModel} = require('./db');
+const {userModel,WorkSpaceModel} = require('./db.js');
 // ✅ CORS Setup
 const corsOptions = {
     origin: "*", // Allow all origins (replace with frontend URL for security)

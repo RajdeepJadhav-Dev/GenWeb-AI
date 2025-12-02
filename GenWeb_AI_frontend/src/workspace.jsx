@@ -36,23 +36,22 @@ export default function Workspace() {
   const [Navaction,setNavaction] = useRecoilState(action);
 
 
+useEffect(() => {
+  const fetchMessages = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/get/${WorkspaceId}`
+      );
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-    
-      try {
-        const res = await axios.get(`https://genweb-ai.onrender.com/get/${WorkspaceId}`);
-       // console.log('Fetched Messages:', res.data.messeges);  // Check what data is fetched
-       setMessages([res.data.messeges[0]]);  // ✅ Store the last message as an array
-      } catch (err) {
-        console.error('Error fetching messages:', err);
-        setMessages('Error loading messages');  // Show error message in UI
-      }
-      
-    };
+      setMessages([res.data.messeges[0]]); 
+    } catch (err) {
+      console.error('Error fetching messages:', err);
+      setMessages('Error loading messages');
+    }
+  };
 
-    fetchMessages();
-  }, [WorkspaceId]);
+  fetchMessages();
+}, [WorkspaceId]);
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -74,39 +73,34 @@ export default function Workspace() {
 const isFetching = useRef(false);
 
 async function GetAiResponse(lastUserMessage) {
- setcodeloading(true);
-    if (isFetching.current) return; // Prevent duplicate calls
+    setcodeloading(true);
+    if (isFetching.current) return;
     isFetching.current = true;
-
 
     setMessages(prev => [...prev, { role: 'user', content: lastUserMessage }]);
     setChatViewMessages('');
     setLoading(true);
 
-    //prompt for ai chat
     const PROMPT = lastUserMessage + Prompt.CHAT_PROMPT;
-    //prompt for ai code
     const CodePROMPT = lastUserMessage + Prompt.CODE_GEN_PROMPT;
 
     try {
-      //chat ai response
-        const response = await axios.post('https://genweb-ai.onrender.com/AiResponse', { PROMPT });
-      //code ai response
-      const res = await axios.post('https://genweb-ai.onrender.com/AiCodeResponse',{CodePROMPT:CodePROMPT});
-      setnewfiledata(res.data.result);
- 
-     
+        // ✅ Run both AI calls at the same time (MUCH FASTER!)
+        const [chatResponse, codeResponse] = await Promise.all([
+            axios.post(import.meta.env.VITE_API_URL+"/AiResponse", { PROMPT }),
+            axios.post(import.meta.env.VITE_API_URL+"/AiCodeResponse", { CodePROMPT })
+        ]);
 
-        setMessages(prev => [...prev, { role: 'ai', content: response.data.result }]);
+        setnewfiledata(codeResponse.data.result);
+        setMessages(prev => [...prev, { role: 'ai', content: chatResponse.data.result }]);
     } catch (err) {
         console.error("❌ AI Response Error:", err);
     } finally {
         setLoading(false);
         isFetching.current = false;
+        setcodeloading(false);
     }
-   setcodeloading(false);
 }
-
 
 //to send chatview message to ai on enter
 const handleKeyDown = (e) => {
